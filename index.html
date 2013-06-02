@@ -1,0 +1,135 @@
+<!DOCTYPE HTML>
+<HTML>
+	<head>
+		<style>
+			body {
+				margin: 0px;
+				padding: 10px;
+			}
+			#buttons {
+				position: absolute;
+				left:10px;
+				top:0px;
+			}
+			button	{
+				margin-top:10px;
+				display: block;
+			}	
+		</style>	
+	</head>
+	<body>
+		<div id="container"></div>
+		<div id="button">
+			<button id="add_note">
+				add note
+			</button>
+		</div>	
+		<script src="js/kinetic-v4.3.3.min.js"></script>
+		<script>
+			var stage = new Kinetic.Stage({
+				container: 'container',
+				width: 800,
+				height: 800
+			});
+			
+			//create content layer
+			var contentLayer = new Kinetic.Layer();
+			
+			//create title text
+			var titleText = new Kinetic.Text({
+				x: stage.getWidth() / 2,
+				y: 15,
+				text: 'Group Pinboad',
+				fontSize: 30,
+				fontFamily: 'Calibri',
+				fill: 'blue'
+			});
+			//offset title text to center
+			titleText.setOffset({
+				x: titleText.getWidth() / 2
+			});	
+			
+			//create group for first note
+			//function createNote() {
+			
+			var note1 = new Kinetic.Group({
+				draggable: true
+			});
+			
+			//rectange for note
+			var note1Rect = new Kinetic.Rect({
+				x:100,
+				y:60,
+				fill:'#FCF0AD',
+				width:200,
+				height: 200,
+				shadowColor: 'black',
+				shadowBlur: 10,
+				shadowOffset: [10,10],
+				shadowOpacity: 0.2,
+			});
+			//pin button for note
+			var pin1 = new Kinetic.Circle({
+				x: note1Rect.getX(),
+				y: note1Rect.getY(),
+				radius: 15,
+				fill: 'red',
+				stroke: 'black',
+				strokeWidth: 2
+			});
+			
+			//text for note
+			var note1Text = new Kinetic.Text({
+				x: note1Rect.getX(),
+				y: note1Rect.getY(),
+				width: note1Rect.getWidth(),
+				height: note1Rect.getHeight(),
+				text: 'Test Note 1 test testasdfa test1',
+				fontSize: 18,
+				fontFamily: 'calibri',
+				fill: 'black',
+				padding: 20,
+				align: 'left'
+			});	
+			
+			//add elements to group
+			note1.add(note1Rect);
+			note1.add(pin1);
+			note1.add(note1Text);
+			contentLayer.add(note1);
+			contentLayer.draw();
+			/*
+			pin1.on('click', function() {
+					if(getDraggable()){
+					setDraggable(false);
+					setFill('black');
+				}
+				else{
+					setDraggable(true);
+					setFill('red');
+				}
+				contentLayer.draw();
+				},false);
+			/*
+			pin1.on('click', function() {
+				if(note1.getDraggable()){
+					note1.setDraggable(false);
+					this.pin1.setFill('black');
+				}
+				
+				else{
+					note1.setDraggable(true);
+					this.setFill('red');
+				}*/
+				contentLayer.draw();
+				});
+			
+			//display elements
+			contentLayer.add(titleText);
+			
+			stage.add(contentLayer);
+			
+			document.getElementById('add_note').addEventListener('click', createNote(), true);
+		</script>
+	</body>
+</html>	

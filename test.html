@@ -1,0 +1,146 @@
+<html>
+<head>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/raphael/2.0.0/raphael-min.js"></script>
+<style type="text/css" media="screen">
+body {
+    background: #333;
+    color: #fff;
+    font: 300 100.1% "Helvetica Neue", Helvetica, "Arial Unicode MS", Arial, sans-serif;
+}
+#holder {
+    height: 480px;
+    left: 50%;
+    margin: -240px 0 0 -320px;
+    position: absolute;
+    top: 50%;
+    width: 640px;
+}
+#copy {
+    bottom: 0;
+    font: 300 .7em "Helvetica Neue", Helvetica, "Arial Unicode MS", Arial, sans-serif;
+    position: absolute;
+    right: 1em;
+    text-align: right;
+}
+#copy a {
+    color: #fff;
+}
+            #holder {
+                -moz-border-radius: 10px;
+                -webkit-border-radius: 10px;
+                border: solid 1px #333;
+            }
+            p {
+                text-align: center;
+            }
+
+</style>
+
+<script>
+
+
+var el;
+window.onload = function () {
+    var dragger = function () {
+        var ind = this.attr("title");
+		if(this.data("pinned")==0){
+		
+        if (this.type != "text") {
+                // move text as well if text is not selected
+            texts[ind].ox = texts[ind].attr("x");
+            texts[ind].oy = texts[ind].attr("y");
+        }        
+        if (this.type == "rect") {
+            this.ox =  this.attr("x");
+            this.oy =  this.attr("y");
+        }        
+        if (this.type == "ellipse" || this.type == "circle") {
+            this.ox = this.attr("cx");
+            this.oy = this.attr("cy");
+        }
+        if (this.type == "text") {
+            this.ox =  this.attr("x");
+            this.oy =  this.attr("y");
+            // move shape as well if shape is not selected
+            shapes[ind].ox = shapes[ind].type == "rect" ? shapes[ind].attr("x") : shapes[ind].attr("cx");
+            shapes[ind].oy = shapes[ind].type == "rect" ? shapes[ind].attr("y") : shapes[ind].attr("cy");            
+        }              
+        
+        this.animate({"fill-opacity": .2}, 500);
+		}else{
+    }},
+        move = function (dx, dy) {
+		if(this.data("pinned")==0){
+		
+            var att2, ind = this.attr("title"), att;
+            
+            if (this.type == "rect") {
+                att = {x: this.ox + dx, y: this.oy + dy}
+                texts[ind].attr(att);
+            }
+            if (this.type == "ellipse" || this.type == "circle") {
+                att = {cx: this.ox + dx, cy: this.oy + dy};
+                att2 = {x: texts[ind].ox + dx, y: texts[ind].oy + dy};
+                texts[ind].attr(att2);
+            }
+            if (this.type == "text") {
+                att = {x: this.ox + dx, y: this.oy + dy}
+                att2 = shapes[ind].type == "rect" ? {x: shapes[ind].ox + dx, y: shapes[ind].oy + dy} : {cx: shapes[ind].ox + dx, cy: shapes[ind].oy + dy};
+                shapes[ind].attr(att2);
+            }  
+            
+            this.attr(att);
+            
+            // text
+            att = {x: texts[ind].ox + dx, y: texts[ind].oy + dy};
+            texts[ind].attr(att);
+            
+          //for (var i = connections.length; i--;) {
+          //r.connection(connections[i]);
+          // }
+            r.safari();
+			}else{
+        }},
+        up = function () {
+		if(this.data("pinned")==0){
+		
+            this.animate({"fill-opacity": 0}, 500);
+			}else{
+        }},
+        r = Raphael("holder", 640, 480),
+        st = [],
+		connections = [],
+        shapes = [  r.circle(190, 100, 30, 20),
+                    r.rect(290, 80, 60, 40, 10),
+                    r.rect(290, 180, 60, 40, 2),
+                    r.circle(450, 100, 20)
+                ],
+        texts = [   r.text(190, 100, "One!"),
+                    r.text(320, 100, "Two"),
+                    r.text(320, 200, "Three"),
+                    r.text(450, 100, "Four")
+                ];
+    for (var i = 0, ii = shapes.length; i < ii; i++) {
+		var st[i] = r.set();
+        var color = Raphael.getColor();
+		st.push(
+        shapes[i].attr({fill: color, stroke: 'red', "fill-opacity": 0, "stroke-width": 2, cursor: "move", title: i}).data("pinned",'0');
+        texts[i].attr({fill: color, stroke: 'blue', "fill-opacity": 0, "stroke-width": 2, cursor: "move", title: i}).data("pinned",'0');    
+        );
+		//shapes[i].drag(move, dragger, up);
+        //texts[i].drag(move, dragger, up);
+		st[i].drag(move,dragger,up);
+    }
+  
+};
+
+</script>
+
+
+</head>
+<body>
+        <p>Drag shapes around.</p> 
+        <div id="holder"></div> 
+        <p id="copy">Demo of <a href="http://raphaeljs.com/">Raphaël</a>-JavaScript Vector Library</p>
+</body>
+</html>
